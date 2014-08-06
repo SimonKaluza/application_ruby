@@ -115,12 +115,12 @@ action :before_migrate do
   end
 
   gem_names = new_resource.gems.map { |gem, ver| gem }
-  if new_resource.migration_command.include?('rake') && !gem_names.include?('rake')
-    gem_package "rake" do
-      action :install
-      not_if "which rake"
-    end
-  end
+  #if new_resource.migration_command.include?('rake') && !gem_names.include?('rake')
+  #  gem_package "rake" do
+  #    action :install
+  #    not_if "which rake"
+  #  end
+  #end
 
 end
 
