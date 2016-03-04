@@ -100,7 +100,7 @@ action :before_migrate do
       execute "#{bundle_command} config #{gem} #{config}" do
         cwd new_resource.release_path
         user new_resource.owner
-        environment new_resource.environment
+        environment new_resource.environment.merge("HOME" => new_resource.release_path)
       end
     end
 
