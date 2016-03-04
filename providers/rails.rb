@@ -107,7 +107,7 @@ action :before_migrate do
     execute command do
       cwd new_resource.release_path
       user new_resource.owner
-      environment new_resource.environment
+      environment new_resource.environment.merge("HOME" => new_resource.release_path)
     end
   else
     # chef runs before_migrate, then symlink_before_migrate symlinks, then migrations,
