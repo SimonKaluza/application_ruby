@@ -92,10 +92,18 @@ action :before_migrate do
       # Check for a Gemfile.lock
       bundler_deployment = ::File.exists?(::File.join(new_resource.release_path, "Gemfile.lock"))
     end
-    command = "export NOKOGIRI_USE_SYSTEM_LIBRARIES=true && "
     command += "#{bundle_command} install --path=vendor/bundle --without #{common_groups}"
     command += " --deployment" if bundler_deployment
     command += " #{bundle_options}" if bundle_options
+
+    new_resource.bundle_config.each do |gem, config|
+      execute "#{bundle_command} config #{gem} #{config}" do
+        cwd new_resource.release_path
+        user new_resource.owner
+        environment new_resource.environment
+      end
+    end
+
     execute command do
       cwd new_resource.release_path
       user new_resource.owner
